@@ -89,25 +89,3 @@ class Detector:
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
-
-    def predictVideo(self, videoPath, threshold=0.5):
-        cap = cv2.VideoCapture(videoPath)
-
-        if (cap.isOpened()==False):
-            print("Error opening file...")
-            return 
-
-        (ret, image) = cap.read()
-        startTime = 0
-        while ret:
-            currentTime = time.time()
-            fps = 1/(currentTime - startTime)
-            startTime = currentTime 
-            bboxImage = self.createBoundingBox(image, threshold)
-            cv2.putText(bboxImage, "FPS: " + str(int(fps)), (20,70), cv2.FONT_HERSHEY_PLAIN, 2, (0,255,0),2)
-            cv2.imshow("Result", bboxImage)
-            key = cv2.waitKey(1) & 0xFF
-            if key == ord("q"):
-                break 
-            (ret, image) = cap.read()
-        cv2.destroyAllWindows()
